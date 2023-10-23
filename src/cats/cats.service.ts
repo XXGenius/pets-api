@@ -3,7 +3,7 @@ import { CatDto, CreateCatDto } from './cats.dto';
 
 @Injectable()
 export class CatsService {
-  private readonly cats: CatDto[] = [
+  private cats: CatDto[] = [
     { id: 0, threadId: 100, name: 'Ashe', gender: 'female', age: 8 },
     { id: 1, threadId: 101, name: 'Vayne', gender: 'female', age: 6 },
     { id: 2, threadId: 102, name: 'Kayle', gender: 'female', age: 1 },
@@ -19,7 +19,8 @@ export class CatsService {
   };
 
   create(cat: CreateCatDto) {
-    // TODO:
+    cat['id'] = this.cats.length;
+   this.cats.push(cat as CatDto)
   }
 
   findAll(): CatDto[] {
