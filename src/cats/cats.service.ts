@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CatDto, CreateCatDto } from './cats.dto';
+import {Payload} from "../types";
 
 @Injectable()
 export class CatsService {
@@ -23,12 +24,26 @@ export class CatsService {
    this.cats.push(cat as CatDto)
   }
 
-  findAll(): CatDto[] {
-    return this.cats;
+  findAll(): Array<{
+    id: number,
+    name: string
+  }> {
+    return this.cats.map(cat => {
+     return {
+       id: cat.id,
+       name: cat.name
+     }
+    });
   }
 
   findOne(id: number): void | CatDto {
     return this.cats.find(cat => cat.id === id);
+  }
+
+  deleteCat(id: number): Payload<String>{
+    const deletedCat = this.findOne(id);
+    this.cats = this.cats.filter(cat => cat.id !== id);
+    return deletedCat ? { payload: `Cat with id=${id} deleted` } : { error: `Cat with id=${id} not found` };
   }
 
   findPhoto(id: string): void | string {

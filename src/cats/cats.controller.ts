@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   Headers,
   HttpException,
@@ -21,7 +21,10 @@ export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Get()
-  findAll(): CatDto[] {
+  findAll(): Array<{
+    id: number,
+    name: string
+  }>  {
     return this.catsService.findAll();
   }
 
@@ -56,5 +59,10 @@ export class CatsController {
       payload:
         'Спасибо за добавление нового котика в базу.',
     };
+  }
+
+  @Delete(':id')
+  delete(@Param('id', ParseIntPipe) id: number): Payload<String> {
+    return this.catsService.deleteCat(id);
   }
 }
